@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soil Moisture Monitoring</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-size: cover;
+            color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #222;
+        }
+
+        header {
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        h1 {
+            margin: 0;
+            font-weight: 500;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        #chart-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            width: 90%;
+            margin: 20px auto;
+            gap: 20px;
+            position: relative;
+        }
+
+        #chart {
+            flex: 2;
+            position: relative;
+            max-width: 900px;
+        }
+
+        .color-legend {
+            flex: 1;
+            max-width: 250px;
+            background-color: rgba(233, 233, 233, 0.499);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.879);
+            color: #000000;
+            text-align: center;
+            font-size: small;
+        }
+
+        .color-legend h2 {
+            margin: 0;
+            font-size: 1.2em;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            padding-bottom: 5px;
+        }
+
+        .color-legend table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .color-legend th, .color-legend td {
+            padding: 10px;
+            border: none;
+            text-align: left;
+        }
+
+        .color-legend th {
+            background-color: rgba(235, 228, 0, 0.893);
+            color: #000000;
+            font-weight: 700;
+        }
+
+        .color-legend td {
+            background-color: rgba(240, 240, 240, 0.282);
+            color: #000000;
+        }
+
+        .color-box {
+            width: 30px;
+            height: 20px;
+            display: inline-block;
+            margin-right: 10px;
+            border-radius: 4px;
+        }
+
+        #chart-controls {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        select {
+            padding: 10px;
+            border: none;
+            background-color: #fdec00;
+            color: #000;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        select:hover {
+            background-color: #e0b800;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            #chart-controls {
+                flex-direction: column;
+            }
+
+            select {
+                width: 100%;
+                margin: 5px 0;
+            }
+
+            #chart-container {
+                flex-direction: column;
+                width: 95%;
+            }
+
+            .color-legend {
+                width: 100%;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Soil Moisture Monitoring</h1>
+    </header>
+
+    <div id="chart-controls">
+        <select id="sensor-select">
+            <option value="1">Show Sensor 1 Data</option>
+            <option value="2">Show Sensor 2 Data</option>
+            <option value="3">Show Sensor 3 Data</option>
+        </select>
+    </div>
+
+    <div id="chart-container">
+        <div id="chart">
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="color-legend">
+            <h2>Moisture Levels Color Legend</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Moisture Range</th>
+                        <th>Color</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>High Moisture (71% - 100%)</td>
+                        <td><div class="color-box" style="background-color: rgba(75, 192, 192, 0.8);"></div></td>
+                    </tr>
+                    <tr>
+                        <td>Moderate Moisture (41% - 70%)</td>
+                        <td><div class="color-box" style="background-color: rgba(255, 159, 64, 0.8);"></div></td>
+                    </tr>
+                    <tr>
+                        <td>Low Moisture (21% - 40%)</td>
+                        <td><div class="color-box" style="background-color: rgba(255, 205, 86, 0.8);"></div></td>
+                    </tr>
+                    <tr>
+                        <td>Very Low Moisture (0% - 20%)</td>
+                        <td><div class="color-box" style="background-color: rgba(255, 99, 132, 0.8);"></div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let currentSensor = 1;
+
+        async function fetchData() {
+            try {
+                const response = await fetch('display_data.php');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                const times = data.timestamps.map(timestamp => new Date(timestamp).toLocaleTimeString());
+                updateChart(times, data.moisture_values_1, data.moisture_values_2, data.moisture_values_3);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        function updateChart(timestamps, moistureValues1, moistureValues2, moistureValues3) {
+            const sensorData = [
+                moistureValues1,
+                moistureValues2,
+                moistureValues3
+            ][currentSensor - 1];
+
+            myChart.data.labels = timestamps;
+            myChart.data.datasets[0].data = sensorData;
+            myChart.data.datasets[0].borderColor = sensorData.map(value => {
+                if (value >= 71) return 'rgba(75, 192, 192, 1)';
+                if (value >= 41) return 'rgba(255, 159, 64, 1)';
+                if (value >= 21) return 'rgba(255, 205, 86, 1)';
+                return 'rgba(255, 99, 132, 1)';
+            });
+            myChart.update();
+        }
+
+        document.getElementById('sensor-select').addEventListener('change', function() {
+            currentSensor = parseInt(this.value);
+            fetchData();
+        });
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Soil Moisture',
+                    data: [],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 2,
+                    pointRadius: 5,
+                    lineTension: 0.2,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: 'Time'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'Moisture Percentage'
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `Moisture: ${context.raw}%`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        fetchData();
+        setInterval(fetchData, 2000);
+    </script>
+</body>
+</html>

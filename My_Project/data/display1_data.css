@@ -1,0 +1,179 @@
+/* สไตล์ทั่วไป */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: url(imges/img77.png) no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #ffffff; /* เปลี่ยนสีข้อความเป็นสีขาวเพื่อความคมชัด */
+}
+
+/* คอนเทนเนอร์หลัก */
+.container {
+    width: 90%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    max-width: 1000px;
+    backdrop-filter: blur(8px);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    max-height: 75vh;
+    position: relative;
+    margin: auto;
+    text-align: center;
+}
+
+/* ปุ่มย้อนกลับ */
+.back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: rgba(214, 215, 206, 0.6);
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 18px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.back-button:hover {
+    background-color: #e61a1a;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* หัวข้อ */
+h1 {
+    position: sticky;
+    top: 0;
+    background-color: rgba(14, 10, 10, 0.7); /* ปรับสีพื้นหลังให้เข้มขึ้น */
+    color: #ffffff;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 700;
+    padding: 10px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    z-index: 10;
+    text-align: center;
+}
+
+/* คอนเทนเนอร์สำหรับตาราง */
+.table-wrapper {
+    max-height: 60vh;
+    margin-top: 20px;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* ตาราง */
+table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.8);
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px; /* เพิ่มความโค้งให้ตาราง */
+    overflow: hidden; /* ซ่อนขอบของตาราง */
+}
+
+thead {
+    display: block;
+    width: 100%;
+    background: linear-gradient(90deg, rgba(255, 223, 0, 1) 0%, rgba(255, 193, 7, 1) 100%);
+    color: #000000;
+}
+
+tbody {
+    display: block;
+    width: 100%;
+    max-height: 50vh;
+    overflow-y: scroll;
+    scrollbar-width: none; /* ซ่อนแถบเลื่อนใน Firefox */
+}
+
+tbody::-webkit-scrollbar {
+    display: none; /* ซ่อนแถบเลื่อนใน Chrome, Safari */
+}
+
+th, td {
+    padding: 15px;
+    text-align: center; /* จัดตำแหน่งข้อความให้อยู่ตรงกลางในแนวนอน */
+    vertical-align: middle; /* จัดตำแหน่งข้อความให้อยู่ตรงกลางในแนวตั้ง */
+    border: 1px solid rgba(0, 0, 0, 0.1); /* ปรับสีเส้นขอบให้จางลง */
+    word-wrap: break-word;
+    width: 33.33%;
+    color: #000000; /* เปลี่ยนสีข้อความในตารางเป็นสีดำ */
+}
+
+th {
+    font-weight: 700;
+}
+
+tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+tr:hover {
+    background-color: rgba(226, 226, 226, 0.8);
+    cursor: pointer;
+}
+
+/* ช่องแสดงข้อมูล */
+.no-data {
+    text-align: center;
+    padding: 10px;
+    font-size: 16px;
+    color: #666;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+}
+
+/* CSS สำหรับช่วงค่าความชื้น */
+td.low-moisture {
+    background: rgba(255, 99, 132, 0.5); /* สีพื้นหลังของความชื้นต่ำ */
+    color: #000; /* สีข้อความสำหรับความชื้นต่ำ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+td.moderate-moisture {
+    background: rgba(255, 205, 86, 0.5); /* สีพื้นหลังของความชื้นปานกลาง */
+    color: #000; /* สีข้อความสำหรับความชื้นปานกลาง */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+td.high-moisture {
+    background: rgba(255, 159, 64, 0.5); /* สีพื้นหลังของความชื้นสูง */
+    color: #000; /* สีข้อความสำหรับความชื้นสูง */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+td.very-high-moisture {
+    background: rgba(75, 192, 192, 0.5); /* สีพื้นหลังของความชื้นสูงมาก */
+    color: #000; /* สีข้อความสำหรับความชื้นสูงมาก */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}

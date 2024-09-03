@@ -1,0 +1,107 @@
+/* สไตล์ทั่วไป */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: url(imges/img5.jpg);
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* คอนเทนเนอร์หลัก */
+.container {
+    width: 90%;
+    max-width: 450px;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.425); /* ความโปร่งใสเล็กน้อย */
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+}
+
+/* ปุ่มย้อนกลับ */
+.back-button {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #d7cece51;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 18px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.back-button:hover {
+    background-color: #e61a1a;
+    transform: scale(1.05);
+}
+
+/* หัวข้อ */
+h1 {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+/* ฟอร์มกรองข้อมูล */
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.filter-form .form-group {
+    width: 100%;
+    max-width: 400px;
+}
+
+.filter-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.filter-form input[type="date"],
+.filter-form input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #007bff;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #000000;
+    transition: border-color 0.3s ease;
+}
+
+.filter-form input[type="date"]:focus,
+.filter-form input[type="number"]:focus {
+    border-color: #0056b3;
+    outline: none;
+}
+
+.filter-form button {
+    padding: 12px 24px;
+    background-color: #ffff23;
+    color: #000000;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.filter-form button:hover {
+    background-color: #edb751;
+    transform: scale(1.05);
+}
